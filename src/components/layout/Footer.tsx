@@ -1,24 +1,38 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Car, Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
+import React from "react";
+import { Link } from "react-router-dom";
+import {
+  Car,
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+  Mail,
+  Phone,
+  MapPin,
+} from "lucide-react";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-card border-t border-border">
-      <div className="container mx-auto px-4 py-16">
+    <footer className="bg-card x-padding">
+      <div className="pt-16 pb-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="space-y-6">
-            <Link to="/" className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-primary/10">
-                <Car className="h-6 w-6 text-primary" />
+            <Link to="/" className="flex items-center gap-1.5 group">
+              <div className="relative">
+                <img
+                  src="https://res.cloudinary.com/dicfxacdd/image/upload/v1764765485/Red_and_Black_Modern_Blockchain_Technology_Logo_Display_ylfhxm.png"
+                  alt="logo"
+                  className=" h-7 w-auto"
+                />
               </div>
-              <span className="font-display text-xl font-bold">
-                Luxury<span className="text-primary">Drives</span>
+              <span className="font-display text-2xl font-bold text-foreground">
+                Omni<span className="text-primary">Q</span>
               </span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Experience the pinnacle of automotive luxury. Premium vehicles for discerning clients who demand excellence.
+              Experience the pinnacle of automotive luxury. Premium vehicles for
+              discerning clients who demand excellence.
             </p>
             <div className="flex gap-4">
               {[Facebook, Twitter, Instagram, Linkedin].map((Icon, idx) => (
@@ -35,11 +49,16 @@ const Footer: React.FC = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-display text-lg font-semibold mb-6">Quick Links</h4>
+            <h4 className="font-display text-lg font-semibold mb-6">
+              Quick Links
+            </h4>
             <ul className="space-y-3">
-              {['Our Fleet', 'How It Works', 'Pricing', 'FAQs'].map((link) => (
+              {["Our Fleet", "How It Works", "Pricing", "FAQs"].map((link) => (
                 <li key={link}>
-                  <Link to="/cars" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  <Link
+                    to="/cars"
+                    className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                  >
                     {link}
                   </Link>
                 </li>
@@ -51,9 +70,17 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-display text-lg font-semibold mb-6">Support</h4>
             <ul className="space-y-3">
-              {['Contact Us', 'Terms of Service', 'Privacy Policy', 'Cancellation Policy'].map((link) => (
+              {[
+                "Contact Us",
+                "Terms of Service",
+                "Privacy Policy",
+                "Cancellation Policy",
+              ].map((link) => (
                 <li key={link}>
-                  <Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  <Link
+                    to="/contact"
+                    className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                  >
                     {link}
                   </Link>
                 </li>
@@ -68,25 +95,30 @@ const Footer: React.FC = () => {
               <li className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-primary mt-0.5" />
                 <span className="text-muted-foreground text-sm">
-                  123 Luxury Avenue<br />
-                  Beverly Hills, CA 90210
+                  08 Tootpara Central Rd,
+                  <br />
+                  Khulna 9100, Bangladesh
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-primary" />
-                <span className="text-muted-foreground text-sm">+1 (888) 123-4567</span>
+                <span className="text-muted-foreground text-sm">
+                  +880 1234 567890
+                </span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-primary" />
-                <span className="text-muted-foreground text-sm">hello@luxurydrives.com</span>
+                <span className="text-muted-foreground text-sm">
+                  syednoor058@gmail.com
+                </span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row md:items-center justify-between gap-2">
           <p className="text-muted-foreground text-sm">
-            © 2024 LuxuryDrives. All rights reserved.
+            © 2025 Syed Shaeduzzaman Noor. All rights reserved.
           </p>
           <p className="text-muted-foreground text-sm">
             Crafted with excellence for those who expect nothing less.

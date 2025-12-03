@@ -30,15 +30,15 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
+      <div className="container mx-auto x-padding">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="p-2 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
-              <Car className="h-7 w-7 text-primary" />
+          <Link to="/" className="flex items-center gap-1.5 group">
+            <div className="relative">
+              <img src='https://res.cloudinary.com/dicfxacdd/image/upload/v1764765485/Red_and_Black_Modern_Blockchain_Technology_Logo_Display_ylfhxm.png' alt='logo' className=' h-7 w-auto' />
             </div>
             <span className="font-display text-2xl font-bold text-foreground">
-              Luxury<span className="text-primary">Drives</span>
+              Omni<span className="text-primary">Q</span>
             </span>
           </Link>
 

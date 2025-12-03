@@ -91,8 +91,9 @@ export const mockCars: Car[] = [
     seats: 2,
     transmission: 'Automatic',
     images: [
-      'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800',
-      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800',
+      'https://res.cloudinary.com/dicfxacdd/image/upload/v1764760639/1_ncyvzl.jpg',
+      'https://res.cloudinary.com/dicfxacdd/image/upload/v1764760634/3_orb9pr.jpg',
+      'https://res.cloudinary.com/dicfxacdd/image/upload/v1764760634/2_hcanvp.jpg'
     ],
     available: true,
     description: 'An icon of sports car excellence. Pure driving pleasure awaits.',
@@ -111,8 +112,8 @@ export const mockCars: Car[] = [
     seats: 5,
     transmission: 'Automatic',
     images: [
-      'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800',
-      'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800',
+      'https://res.cloudinary.com/dicfxacdd/image/upload/v1764760636/5_undcgu.jpg',
+      'https://res.cloudinary.com/dicfxacdd/image/upload/v1764760635/4_wmkqmp.jpg',
     ],
     available: false,
     description: 'The ultimate luxury SUV combining refinement with all-terrain capability.',
@@ -151,8 +152,8 @@ export const mockCars: Car[] = [
     seats: 4,
     transmission: 'Automatic',
     images: [
-      'https://images.unsplash.com/photo-1606664913246-d08ea2dbced3?w=800',
-      'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=800',
+      'https://res.cloudinary.com/dicfxacdd/image/upload/v1764760637/7_lut7lv.jpg',
+      'https://res.cloudinary.com/dicfxacdd/image/upload/v1764760637/6_m6zw0k.jpg',
     ],
     available: true,
     description: 'Performance meets elegance in this stunning four-door coupe.',

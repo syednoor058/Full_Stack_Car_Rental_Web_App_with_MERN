@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Car, Mail, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useAuth } from '@/contexts/AuthContext';
-import { useToast } from '@/hooks/use-toast';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Car, Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {}
+  );
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -20,26 +22,26 @@ const Login: React.FC = () => {
 
   const validateForm = () => {
     const newErrors: { email?: string; password?: string } = {};
-    
+
     if (!email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = 'Please enter a valid email';
+      newErrors.email = "Please enter a valid email";
     }
-    
+
     if (!password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
     } else if (password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = "Password must be at least 6 characters";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setLoading(true);
@@ -50,11 +52,12 @@ const Login: React.FC = () => {
           title: "Welcome back!",
           description: "You have successfully logged in.",
         });
-        navigate('/dashboard');
+        navigate("/dashboard");
       } else {
         toast({
           title: "Login failed",
-          description: "Invalid email or password. Try: john@example.com or admin@luxurydrives.com",
+          description:
+            "Invalid email or password. Try: john@example.com or admin@luxurydrives.com",
           variant: "destructive",
         });
       }
@@ -75,19 +78,27 @@ const Login: React.FC = () => {
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md space-y-8">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 justify-center">
-            <div className="p-2 rounded-xl bg-primary/10">
-              <Car className="h-8 w-8 text-primary" />
+          <Link to="/" className="flex items-center justify-center gap-1.5 group">
+            <div className="relative">
+              <img
+                src="https://res.cloudinary.com/dicfxacdd/image/upload/v1764765485/Red_and_Black_Modern_Blockchain_Technology_Logo_Display_ylfhxm.png"
+                alt="logo"
+                className=" h-7 w-auto"
+              />
             </div>
-            <span className="font-display text-2xl font-bold">
-              Luxury<span className="text-primary">Drives</span>
+            <span className="font-display text-2xl font-bold text-foreground">
+              Omni<span className="text-primary">Q</span>
             </span>
           </Link>
 
           {/* Header */}
           <div className="text-center">
-            <h1 className="font-display text-3xl font-bold text-foreground mb-2">Welcome Back</h1>
-            <p className="text-muted-foreground">Sign in to access your account</p>
+            <h1 className="font-display text-3xl font-bold text-foreground mb-2">
+              Welcome Back
+            </h1>
+            <p className="text-muted-foreground">
+              Sign in to access your account
+            </p>
           </div>
 
           {/* Form */}
@@ -105,7 +116,9 @@ const Login: React.FC = () => {
                   className="pl-12"
                 />
               </div>
-              {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
+              {errors.email && (
+                <p className="text-sm text-destructive">{errors.email}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -114,7 +127,7 @@ const Login: React.FC = () => {
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -125,46 +138,73 @@ const Login: React.FC = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
                 </button>
               </div>
-              {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
+              {errors.password && (
+                <p className="text-sm text-destructive">{errors.password}</p>
+              )}
             </div>
 
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" className="rounded border-border" />
-                <span className="text-sm text-muted-foreground">Remember me</span>
+                <span className="text-sm text-muted-foreground">
+                  Remember me
+                </span>
               </label>
-              <Link to="/forgot-password" className="text-sm text-primary hover:underline">
+              <Link
+                to="/forgot-password"
+                className="text-sm text-primary hover:underline"
+              >
                 Forgot password?
               </Link>
             </div>
 
-            <Button variant="gold" size="lg" className="w-full" disabled={loading}>
+            <Button
+              variant="gold"
+              size="lg"
+              className="w-full"
+              disabled={loading}
+            >
               {loading ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin mr-2" />
                   Signing in...
                 </>
               ) : (
-                'Sign In'
+                "Sign In"
               )}
             </Button>
           </form>
 
           {/* Demo Credentials */}
           <div className="glass-card p-4 text-center">
-            <p className="text-sm text-muted-foreground mb-2">Demo Credentials:</p>
-            <p className="text-xs text-muted-foreground">User: john@example.com</p>
-            <p className="text-xs text-muted-foreground">Admin: admin@luxurydrives.com</p>
-            <p className="text-xs text-muted-foreground mt-1">(any password works)</p>
+            <p className="text-sm text-muted-foreground mb-2">
+              Demo Credentials:
+            </p>
+            <p className="text-xs text-muted-foreground">
+              User: john@example.com
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Admin: admin@luxurydrives.com
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              (any password works)
+            </p>
           </div>
 
           {/* Register Link */}
           <p className="text-center text-muted-foreground">
-            Don't have an account?{' '}
-            <Link to="/register" className="text-primary hover:underline font-medium">
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="text-primary hover:underline font-medium"
+            >
               Create account
             </Link>
           </p>
@@ -179,6 +219,7 @@ const Login: React.FC = () => {
           alt="Luxury car"
           className="w-full h-full object-cover"
         />
+
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
       </div>
     </div>
