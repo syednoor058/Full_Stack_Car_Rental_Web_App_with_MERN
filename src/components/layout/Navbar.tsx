@@ -15,6 +15,7 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
+  const activeUrl = window.location.pathname;
 
   const handleLogout = () => {
     logout();
@@ -29,8 +30,8 @@ const Navbar: React.FC = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
-      <div className="container mx-auto x-padding">
+    <nav className="fixed top-0 md:top-4 left-0 right-0 z-50 backdrop-blur-2xl max-w-5xl mx-auto rounded-none md:rounded-full shadow-lg border border-gold-dark/25 bg-black/40">
+      <div className="container">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-1.5 group">
@@ -48,7 +49,7 @@ const Navbar: React.FC = () => {
               <Link
                 key={link.href}
                 to={link.href}
-                className="text-muted-foreground hover:text-foreground transition-colors font-medium"
+                className={`hover:text-foreground transition-colors font-medium ${activeUrl === link.href ? 'text-gold-light' : 'text-foreground/75'}`}
               >
                 {link.label}
               </Link>
@@ -116,7 +117,7 @@ const Navbar: React.FC = () => {
                 <Link
                   key={link.href}
                   to={link.href}
-                  className="text-muted-foreground hover:text-foreground transition-colors font-medium py-2"
+                  className={`text-muted-foreground hover:text-foreground transition-colors font-medium py-2 ${activeUrl === link.href ? 'text-gold-light' : ''}`}
                   onClick={() => setIsOpen(false)}
                 >
                   {link.label}

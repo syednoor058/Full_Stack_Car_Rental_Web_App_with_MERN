@@ -70,7 +70,7 @@ const Index: React.FC = () => {
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center py-20 x-padding overflow-hidden">
         {/* Parallax Background */}
         <motion.div style={{ y: heroY, opacity: heroOpacity }} className="absolute inset-0 z-0">
-          <LoopVideo src="https://res.cloudinary.com/dicfxacdd/video/upload/v1764754786/car_rental_banner_video_xhrg5g.webm" className="absolute w-full h-full object-cover" />
+          <LoopVideo src="https://res.cloudinary.com/dicfxacdd/video/upload/v1764754786/car_rental_banner_video_xhrg5g.webm" className="absolute w-full h-full object-cover opacity-75" />
         </motion.div>
 
         <motion.div
@@ -90,7 +90,7 @@ const Index: React.FC = () => {
           {/* Heading */}
           <motion.h1
             variants={fadeInUp}
-            className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-foreground mb-6 tracking-tight leading-tight"
+            className="font-display text-4xl md:text-7xl font-bold text-foreground mb-6 leading-none"
           >
             Drive the Experience
             <span className="block mt-2 text-gradient-gold">
@@ -101,7 +101,7 @@ const Index: React.FC = () => {
           {/* Subheading */}
           <motion.p
             variants={fadeInUp}
-            className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto mb-10"
+            className="text-base md:text-lg text-white/60 max-w-2xl mx-auto mb-10"
           >
             Experience luxury redefined. From elegant sedans to powerful
             sports cars, find the perfect vehicle for every occasion.
@@ -119,8 +119,8 @@ const Index: React.FC = () => {
               </Button>
             </Link>
             <Link to="/register">
-              <Button variant="gold-outline" size="xl" className="backdrop-blur-sm bg-background/20 hover:bg-primary/10">
-                Create Account
+              <Button variant="gold-outline" size="xl" className="backdrop-blur-sm bg-background/20 hover:bg-primary/10 hover:text-white">
+                Get Started
               </Button>
             </Link>
           </motion.div>
@@ -128,7 +128,7 @@ const Index: React.FC = () => {
           {/* Stats */}
           <motion.div
             variants={fadeInUp}
-            className="grid grid-cols-3 gap-8 mt-24 max-w-3xl mx-auto border-t border-white/10 pt-10"
+            className="grid grid-cols-3 gap-8 mt-20 max-w-3xl mx-auto border-t border-white/10 pt-6"
           >
             {[
               { value: "50+", label: "Premium Vehicles" },
@@ -145,23 +145,27 @@ const Index: React.FC = () => {
               </div>
             ))}
           </motion.div>
-        </motion.div>
 
-        {/* Scroll Indicator */}
+          {/* Scroll Indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 1 }}
-          className="absolute bottom-5 w-full flex flex-row gap-3 justify-center items-center z-20"
+          className="bottom-0 w-full flex flex-row gap-7 justify-center items-center mt-14 text-lg text-white/60 leading-none font-light"
         >
+          <span>Scroll</span>
           <motion.div
-            animate={{ y: [0, 10, 0] }}
+            animate={{ opacity: [0, 1, 0] }}
             transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
             className="flex items-center justify-center p-2 rounded-full border border-primary/30 bg-primary/5 backdrop-blur-md"
           >
             <Mouse className="text-primary h-5 w-5" />
           </motion.div>
+          <span>Down</span>
         </motion.div>
+        </motion.div>
+
+        
 
         <div className="absolute w-full h-xl bottom-0 inset-0 bg-gradient-to-t from-[#0a0c10] via-[#0a0c10]/60 to-transparent z-10" />
       </section>
@@ -190,7 +194,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="pt-32 pb-24 bg-[#101318] x-padding relative">
+      <section className="pt-32 pb-24 bg-gradient-to-b from-[#0a0c10] to-[#101318] x-padding relative">
         <motion.div
           initial="hidden"
           whileInView="show"
@@ -252,7 +256,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* Features Section */}
-      <section className="pt-10 pb-24 bg-[#101318] x-padding">
+      <section className="pt-10 pb-24 bg-gradient-to-b from-[#101318] to-[#0a0c10] x-padding">
         <motion.div
           initial="hidden"
           whileInView="show"
@@ -361,7 +365,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* App Download Section */}
-      <section ref={appRef} className="py-32 bg-[#101318] x-padding relative overflow-hidden">
+      <section ref={appRef} className="py-20 bg-[#101318] x-padding relative overflow-hidden">
         <div className="absolute inset-0 bg-primary/5" />
         <div className="absolute right-0 top-0 w-[500px] h-[500px] bg-primary/20 blur-[150px] rounded-full opacity-30 pointer-events-none" />
         <div className="absolute left-0 bottom-0 w-[500px] h-[500px] bg-blue-500/10 blur-[150px] rounded-full opacity-30 pointer-events-none" />
@@ -426,9 +430,9 @@ const Index: React.FC = () => {
               <div className="relative w-[300px] md:w-[400px] mx-auto">
                 <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 to-blue-500/30 rounded-3xl blur-2xl transform rotate-6" />
                 <img
-                  src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=2070&auto=format&fit=crop"
+                  src="/mobile-screenshot.png"
                   alt="App Preview"
-                  className="relative z-10 w-full h-[600px] object-cover rounded-[2.5rem] border-[8px] border-white/10 shadow-2xl"
+                  className="relative z-10 w-full h-[562.5px] md:h-[750px] object-cover rounded-[2.5rem] border-[8px] border-black/60 shadow-2xl"
                 />
               </div>
             </motion.div>
@@ -498,11 +502,11 @@ const Index: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 relative overflow-hidden x-padding">
+      <section className="py-20 relative overflow-hidden x-padding">
         <div className="absolute inset-0">
           <img src="https://res.cloudinary.com/dicfxacdd/image/upload/v1764762315/Untitled_design_2_hdjzpr.jpg"
             alt="CTA Background"
-            className="w-full h-full object-cover object-center opacity-30" />
+            className="w-full h-full object-cover object-center opacity-60" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
         </div>
         <motion.div
@@ -512,8 +516,7 @@ const Index: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="container mx-auto px-4 relative z-10"
         >
-          <div className="max-w-4xl mx-auto text-center glass-card p-12 md:p-20 rounded-[3rem] border border-white/10 relative overflow-hidden">
-            <div className="absolute inset-0 bg-primary/5" />
+          <div className="max-w-4xl mx-auto text-center p-12 rounded-3xl border border-gold-dark/25 relative overflow-hidden backdrop-blur-2xl">
             <div className="relative z-10">
               <h2 className="font-display text-4xl md:text-6xl font-bold text-foreground mb-6">
                 Ready to Experience <span className="text-primary">Luxury?</span>
