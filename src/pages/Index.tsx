@@ -147,25 +147,25 @@ const Index: React.FC = () => {
           </motion.div>
 
           {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 1 }}
-          className="bottom-0 w-full flex flex-row gap-7 justify-center items-center mt-14 text-lg text-white/60 leading-none font-light"
-        >
-          <span>Scroll</span>
           <motion.div
-            animate={{ opacity: [0, 1, 0] }}
-            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-            className="flex items-center justify-center p-2 rounded-full border border-primary/30 bg-primary/5 backdrop-blur-md"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5, duration: 1 }}
+            className="bottom-0 w-full flex flex-row gap-7 justify-center items-center mt-14 text-lg text-white/60 leading-none font-light"
           >
-            <Mouse className="text-primary h-5 w-5" />
+            <span>Scroll</span>
+            <motion.div
+              animate={{ opacity: [0, 1, 0] }}
+              transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+              className="flex items-center justify-center p-2 rounded-full border border-primary/30 bg-primary/5 backdrop-blur-md"
+            >
+              <Mouse className="text-primary h-5 w-5" />
+            </motion.div>
+            <span>Down</span>
           </motion.div>
-          <span>Down</span>
-        </motion.div>
         </motion.div>
 
-        
+
 
         <div className="absolute w-full h-xl bottom-0 inset-0 bg-gradient-to-t from-[#0a0c10] via-[#0a0c10]/60 to-transparent z-10" />
       </section>
@@ -175,19 +175,39 @@ const Index: React.FC = () => {
         <div className="x-padding mb-6">
           <p className="text-center text-sm font-medium text-muted-foreground uppercase tracking-widest">Trusted by leading automotive brands</p>
         </div>
-        <div className="relative flex overflow-x-hidden group">
+        <div className="relative flex overflow-x-hidden group max-w-6xl mx-auto">
+          {/* Side Overlays */}
+          <div className="absolute inset-y-0 left-0 w-32 md:w-64 bg-gradient-to-r from-[#0a0c10] to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-32 md:w-64 bg-gradient-to-l from-[#0a0c10] to-transparent z-10 pointer-events-none" />
+
           <div className="animate-marquee whitespace-nowrap flex items-center gap-24 py-4 px-12 group-hover:pause">
-            {["PORSCHE", "MERCEDES-BENZ", "BMW", "AUDI", "TESLA", "BENTLEY", "ROLLS-ROYCE", "FERRARI"].map((brand, i) => (
-              <span key={i} className="text-3xl md:text-4xl font-display font-bold text-white/10 hover:text-white/30 transition-colors duration-300">
-                {brand}
-              </span>
+            {[
+              { logo: "/brands/porsche.png", alt: "Porsche" },
+              { logo: "/brands/bmw.png", alt: "BMW" },
+              { logo: "/brands/audi.png", alt: "Audi" },
+              { logo: "/brands/tesla.png", alt: "Tesla" },
+              { logo: "/brands/bentley.png", alt: "Bentley" },
+              { logo: "/brands/rolls.png", alt: "Rolls-Royce" },
+              { logo: "/brands/ferrari.png", alt: "Ferrari" },
+            ].map((brand, i) => (
+              <div key={i} className="flex items-center justify-center grayscale opacity-30 hover:grayscale-0 hover:opacity-100 transition-all duration-500 h-10 md:h-12">
+                <img src={brand.logo} alt={brand.alt} className="h-full w-auto object-contain invert" />
+              </div>
             ))}
           </div>
           <div className="absolute top-0 animate-marquee2 whitespace-nowrap flex items-center gap-24 py-4 px-12 group-hover:pause">
-            {["PORSCHE", "MERCEDES-BENZ", "BMW", "AUDI", "TESLA", "BENTLEY", "ROLLS-ROYCE", "FERRARI"].map((brand, i) => (
-              <span key={i} className="text-3xl md:text-4xl font-display font-bold text-white/10 hover:text-white/30 transition-colors duration-300">
-                {brand}
-              </span>
+            {[
+              { logo: "/brands/porsche.png", alt: "Porsche" },
+              { logo: "/brands/bmw.png", alt: "BMW" },
+              { logo: "/brands/audi.png", alt: "Audi" },
+              { logo: "/brands/tesla.png", alt: "Tesla" },
+              { logo: "/brands/bentley.png", alt: "Bentley" },
+              { logo: "/brands/rolls.png", alt: "Rolls-Royce" },
+              { logo: "/brands/ferrari.png", alt: "Ferrari" },
+            ].map((brand, i) => (
+              <div key={i} className="flex items-center justify-center grayscale opacity-30 hover:grayscale-0 hover:opacity-100 transition-all duration-500 h-10 md:h-12">
+                <img src={brand.logo} alt={brand.alt} className="h-full w-auto object-contain invert" />
+              </div>
             ))}
           </div>
         </div>

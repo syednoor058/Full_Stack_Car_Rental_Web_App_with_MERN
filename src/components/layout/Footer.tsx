@@ -14,7 +14,7 @@ import {
 const Footer: React.FC = () => {
   return (
     <footer className="bg-card x-padding">
-      <div className="pt-16 pb-4">
+      <div className="pt-16 pb-4 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="space-y-6">
