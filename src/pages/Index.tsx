@@ -20,8 +20,8 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CarCard from "@/components/cars/CarCard";
-import { mockCars } from "@/data/mockData";
 import LoopVideo from "@/components/ui/loop-video";
+import { useCars } from "@/hooks/useCars";
 
 // Animation Variants
 const staggerContainer: Variants = {
@@ -45,7 +45,13 @@ const scaleUp: Variants = {
 };
 
 const Index: React.FC = () => {
-  const featuredCars = mockCars.slice(0, 6);
+  const { data: cars = [] } = useCars();
+  
+  // Sort by createdAt (descending) and take top 6
+  const featuredCars = [...cars]
+    .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 6);
+
   const heroRef = useRef<HTMLDivElement>(null);
   const appRef = useRef<HTMLDivElement>(null);
 
@@ -367,7 +373,7 @@ const Index: React.FC = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredCars.map((car, i) => (
-              <motion.div key={car.id} variants={fadeInUp} custom={i}>
+              <motion.div key={car._id || car.id} variants={fadeInUp} custom={i}>
                 <CarCard car={car} />
               </motion.div>
             ))}

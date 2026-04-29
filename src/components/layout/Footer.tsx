@@ -11,6 +11,13 @@ import {
   MapPin,
 } from "lucide-react";
 
+const navLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'Cars', href: '/cars' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
+];
+
 const Footer: React.FC = () => {
   return (
     <footer className="bg-card x-padding">
@@ -53,13 +60,13 @@ const Footer: React.FC = () => {
               Quick Links
             </h4>
             <ul className="space-y-3">
-              {["Our Fleet", "How It Works", "Pricing", "FAQs"].map((link) => (
-                <li key={link}>
+              {navLinks.map((link) => (
+                <li key={link.href}>
                   <Link
-                    to="/cars"
+                    to={link.href}
                     className="text-muted-foreground hover:text-primary transition-colors text-sm"
                   >
-                    {link}
+                    {link.label}
                   </Link>
                 </li>
               ))}

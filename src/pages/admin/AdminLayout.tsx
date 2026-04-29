@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
-import { 
-  Car, 
-  LayoutDashboard, 
-  ClipboardList, 
-  DollarSign, 
+import {
+  Car,
+  LayoutDashboard,
+  ClipboardList,
+  DollarSign,
   Users,
-  LogOut, 
+  LogOut,
   Menu,
   X,
   ChevronRight
@@ -42,7 +42,7 @@ const AdminLayout: React.FC = () => {
   return (
     <div className="min-h-screen bg-background flex">
       {/* Sidebar */}
-      <aside 
+      <aside
         className={cn(
           "fixed lg:static inset-y-0 left-0 z-50 w-64 bg-card border-r border-border transform transition-transform duration-300 lg:translate-x-0",
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -51,16 +51,13 @@ const AdminLayout: React.FC = () => {
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="p-6 border-b border-border">
-            <Link to="/" className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-primary/10">
-                <Car className="h-6 w-6 text-primary" />
+            <Link to="/" className="flex items-center gap-1.5 group">
+              <div className="relative">
+                <img src='https://res.cloudinary.com/dicfxacdd/image/upload/v1764765485/Red_and_Black_Modern_Blockchain_Technology_Logo_Display_ylfhxm.png' alt='logo' className=' h-7 w-auto' />
               </div>
-              <div>
-                <span className="font-display text-lg font-bold">
-                  Luxury<span className="text-primary">Drives</span>
-                </span>
-                <p className="text-xs text-muted-foreground">Admin Panel</p>
-              </div>
+              <span className="font-display text-2xl font-bold text-foreground">
+                Omni<span className="text-primary">Q</span>
+              </span>
             </Link>
           </div>
 
@@ -100,8 +97,8 @@ const AdminLayout: React.FC = () => {
                 <p className="text-xs text-muted-foreground">{user.email}</p>
               </div>
             </div>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="w-full gap-2"
               onClick={() => {
                 logout();
@@ -117,7 +114,7 @@ const AdminLayout: React.FC = () => {
 
       {/* Mobile Overlay */}
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
@@ -128,15 +125,15 @@ const AdminLayout: React.FC = () => {
         {/* Top Bar */}
         <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border">
           <div className="flex items-center justify-between px-4 lg:px-8 h-16">
-            <button 
+            <button
               className="lg:hidden p-2 text-foreground"
               onClick={() => setSidebarOpen(!sidebarOpen)}
             >
               {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
-            
+
             <div className="flex-1 lg:flex-none" />
-            
+
             <Link to="/cars">
               <Button variant="gold-outline" size="sm">
                 View Site
