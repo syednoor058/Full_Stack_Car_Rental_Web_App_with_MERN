@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { getCarById } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -17,20 +16,36 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import CheckoutForm from '@/components/booking/CheckoutForm';
+
+// Replace with your Stripe public key
+const stripePromise = loadStripe('pk_test_51TRVszApeTmD2YRJ85gc53mvuNUALd7SeBvKwrXWFSiQGZYJcfDCZZsQZNMloMiERXMcGdpawSNjo4XC5QUrhVUL00hZ4hixQX');
+
+import { useCar } from '@/hooks/useCars';
 
 const CarDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { toast } = useToast();
-  
+
   const [pickupDate, setPickupDate] = useState('');
   const [returnDate, setReturnDate] = useState('');
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
-  const car = getCarById(id || '');
+  const { data: car, isLoading, error } = useCar(id || '');
 
-  if (!car) {
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-primary text-xl">Loading car details...</div>
+      </div>
+    );
+  }
+
+  if (!car || error) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -90,8 +105,8 @@ const CarDetails: React.FC = () => {
       <main className="pt-28 pb-16">
         <div className="container mx-auto px-4">
           {/* Back Button */}
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             onClick={() => navigate('/cars')}
             className="mb-6 gap-2"
           >
@@ -192,11 +207,22 @@ const CarDetails: React.FC = () => {
               {/* Book Now */}
               <Dialog open={isBookingOpen} onOpenChange={setIsBookingOpen}>
                 <DialogTrigger asChild>
-                  <Button 
-                    variant="gold" 
-                    size="xl" 
+                  <Button
+                    variant="gold"
+                    size="xl"
                     className="w-full gap-2"
                     disabled={!car.available}
+                    onClick={(e) => {
+                      if (!isAuthenticated) {
+                        e.preventDefault();
+                        toast({
+                          title: "Authentication Required",
+                          description: "Please login to book a car.",
+                          variant: "destructive",
+                        });
+                        navigate('/login');
+                      }
+                    }}
                   >
                     <Calendar className="h-5 w-5" />
                     {car.available ? 'Rent Now' : 'Currently Unavailable'}
@@ -227,7 +253,7 @@ const CarDetails: React.FC = () => {
                         className="bg-secondary"
                       />
                     </div>
-                    
+
                     {totalDays > 0 && (
                       <div className="glass-card p-4 space-y-2">
                         <div className="flex justify-between text-sm">
@@ -245,9 +271,17 @@ const CarDetails: React.FC = () => {
                       </div>
                     )}
 
-                    <Button variant="gold" className="w-full" onClick={handleBooking}>
-                      Confirm Booking
-                    </Button>
+                    {totalDays > 0 && (
+                      <Elements stripe={stripePromise}>
+                        <CheckoutForm
+                          carId={car._id}
+                          pickupDate={pickupDate}
+                          returnDate={returnDate}
+                          totalAmount={totalAmount}
+                          onSuccess={() => setIsBookingOpen(false)}
+                        />
+                      </Elements>
+                    )}
                   </div>
                 </DialogContent>
               </Dialog>

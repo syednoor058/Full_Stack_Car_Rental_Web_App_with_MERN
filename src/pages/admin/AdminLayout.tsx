@@ -5,6 +5,7 @@ import {
   LayoutDashboard, 
   ClipboardList, 
   DollarSign, 
+  Users,
   LogOut, 
   Menu,
   X,
@@ -29,6 +30,7 @@ const AdminLayout: React.FC = () => {
     { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { label: 'Cars', href: '/admin/cars', icon: Car },
     { label: 'Rentals', href: '/admin/rentals', icon: ClipboardList },
+    { label: 'Customers', href: '/admin/customers', icon: Users },
     { label: 'Revenue', href: '/admin/revenue', icon: DollarSign },
   ];
 

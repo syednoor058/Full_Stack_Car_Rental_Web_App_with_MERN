@@ -1,12 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, mockUsers } from '@/data/mockData';
+import { User } from '@/data/mockData';
+import API from '@/lib/api';
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
   login: (email: string, password: string) => Promise<boolean>;
-  register: (name: string, email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string, phone: string, address: string) => Promise<boolean>;
   logout: () => void;
   loading: boolean;
 }
@@ -39,45 +40,37 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Mock authentication - in real app, this would call your MERN backend
-    const foundUser = mockUsers.find(u => u.email === email);
-    
-    if (foundUser) {
-      setUser(foundUser);
-      localStorage.setItem('luxurydrives_user', JSON.stringify(foundUser));
-      localStorage.setItem('luxurydrives_token', 'mock_jwt_token_' + foundUser.id);
+    try {
+      setLoading(true);
+      const { data } = await API.post('/users/login', { email, password });
+      
+      setUser(data);
+      localStorage.setItem('luxurydrives_user', JSON.stringify(data));
+      localStorage.setItem('luxurydrives_token', data.token);
       return true;
+    } catch (error) {
+      console.error('Login error:', error);
+      return false;
+    } finally {
+      setLoading(false);
     }
-    return false;
   };
 
-  const register = async (name: string, email: string, password: string): Promise<boolean> => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Check if email already exists
-    const existingUser = mockUsers.find(u => u.email === email);
-    if (existingUser) {
+  const register = async (name: string, email: string, password: string, phone: string, address: string): Promise<boolean> => {
+    try {
+      setLoading(true);
+      const { data } = await API.post('/users', { name, email, password, phone, address });
+      
+      setUser(data);
+      localStorage.setItem('luxurydrives_user', JSON.stringify(data));
+      localStorage.setItem('luxurydrives_token', data.token);
+      return true;
+    } catch (error) {
+      console.error('Registration error:', error);
       return false;
+    } finally {
+      setLoading(false);
     }
-    
-    // Create new user (mock)
-    const newUser: User = {
-      id: Date.now().toString(),
-      name,
-      email,
-      phone: '',
-      role: 'user',
-      createdAt: new Date().toISOString().split('T')[0],
-    };
-    
-    setUser(newUser);
-    localStorage.setItem('luxurydrives_user', JSON.stringify(newUser));
-    localStorage.setItem('luxurydrives_token', 'mock_jwt_token_' + newUser.id);
-    return true;
   };
 
   const logout = () => {

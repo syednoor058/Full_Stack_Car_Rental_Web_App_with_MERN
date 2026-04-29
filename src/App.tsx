@@ -11,6 +11,8 @@ import Cars from "./pages/Cars";
 import CarDetails from "./pages/CarDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 // User Dashboard
@@ -22,6 +24,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminCars from "./pages/admin/AdminCars";
 import AdminRentals from "./pages/admin/AdminRentals";
 import AdminRevenue from "./pages/admin/AdminRevenue";
+import AdminCustomers from "./pages/admin/AdminCustomers";
 import { useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
 
@@ -66,6 +69,8 @@ const App = () => {
               <Route path="/" element={<Index />} />
               <Route path="/cars" element={<Cars />} />
               <Route path="/cars/:id" element={<CarDetails />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
 
@@ -77,6 +82,7 @@ const App = () => {
                 <Route index element={<AdminDashboard />} />
                 <Route path="cars" element={<AdminCars />} />
                 <Route path="rentals" element={<AdminRentals />} />
+                <Route path="customers" element={<AdminCustomers />} />
                 <Route path="revenue" element={<AdminRevenue />} />
               </Route>
 

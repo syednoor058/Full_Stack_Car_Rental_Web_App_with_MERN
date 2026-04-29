@@ -6,18 +6,18 @@ import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
-import { getRentalsByUserId, getCarById } from '@/data/mockData';
+
+import { useMyBookings } from '@/hooks/useMyBookings';
 
 const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { data: rentals = [], isLoading } = useMyBookings();
 
   if (!user) {
     navigate('/login');
     return null;
   }
-
-  const rentals = getRentalsByUserId(user.id);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -125,7 +125,11 @@ const Dashboard: React.FC = () => {
                   My Rentals
                 </h2>
                 
-                {rentals.length === 0 ? (
+                {isLoading ? (
+                  <div className="glass-card p-12 text-center animate-pulse">
+                    <p className="text-muted-foreground">Loading your rentals...</p>
+                  </div>
+                ) : rentals.length === 0 ? (
                   <div className="glass-card p-12 text-center">
                     <Car className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                     <h3 className="text-lg font-medium text-foreground mb-2">No Rentals Yet</h3>
@@ -141,24 +145,24 @@ const Dashboard: React.FC = () => {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {rentals.map((rental) => {
-                      const car = rental.car || getCarById(rental.carId);
+                    {rentals.map((rental: any) => {
+                      const car = rental.car;
                       const remainingDays = rental.status === 'active' ? calculateRemainingDays(rental.returnDate) : 0;
                       
                       return (
-                        <div key={rental.id} className="glass-card p-6">
+                        <div key={rental._id} className="glass-card p-6">
                           <div className="flex flex-col md:flex-row gap-6">
                             {/* Car Image */}
                             {car && (
                               <div className="md:w-48 h-32 rounded-lg overflow-hidden flex-shrink-0">
                                 <img
-                                  src={car.images[0]}
+                                  src={car.images[0] || 'https://via.placeholder.com/150'}
                                   alt={car.name}
                                   className="w-full h-full object-cover"
                                 />
                               </div>
                             )}
-
+ 
                             {/* Rental Info */}
                             <div className="flex-1 space-y-3">
                               <div className="flex items-start justify-between">
@@ -172,20 +176,20 @@ const Dashboard: React.FC = () => {
                                 </div>
                                 {getStatusBadge(rental.status)}
                               </div>
-
+ 
                               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <div className="flex items-center gap-2">
                                   <Calendar className="h-4 w-4 text-primary" />
                                   <div>
                                     <p className="text-xs text-muted-foreground">Pickup</p>
-                                    <p className="text-sm text-foreground">{rental.pickupDate}</p>
+                                    <p className="text-sm text-foreground">{new Date(rental.pickupDate).toLocaleDateString()}</p>
                                   </div>
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <Calendar className="h-4 w-4 text-primary" />
                                   <div>
                                     <p className="text-xs text-muted-foreground">Return</p>
-                                    <p className="text-sm text-foreground">{rental.returnDate}</p>
+                                    <p className="text-sm text-foreground">{new Date(rental.returnDate).toLocaleDateString()}</p>
                                   </div>
                                 </div>
                                 <div className="flex items-center gap-2">
@@ -212,6 +216,7 @@ const Dashboard: React.FC = () => {
                     })}
                   </div>
                 )}
+
               </section>
             </div>
           </div>

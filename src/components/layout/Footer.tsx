@@ -95,21 +95,21 @@ const Footer: React.FC = () => {
               <li className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-primary mt-0.5" />
                 <span className="text-muted-foreground text-sm">
-                  08 Tootpara Central Rd,
+                  Empire Heights, Tower A,
                   <br />
-                  Khulna 9100, Bangladesh
+                  Business Bay, Dubai, UAE
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-primary" />
                 <span className="text-muted-foreground text-sm">
-                  +880 1234 567890
+                  +971589564851
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-primary" />
                 <span className="text-muted-foreground text-sm">
-                  syednoor058@gmail.com
+                  support.omniq@gmail.com
                 </span>
               </li>
             </ul>
@@ -118,10 +118,10 @@ const Footer: React.FC = () => {
 
         <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row md:items-center justify-between gap-2">
           <p className="text-muted-foreground text-sm">
-            © 2025 Syed Shaeduzzaman Noor. All rights reserved.
+            © {new Date().getFullYear()} OmniQ. All rights reserved.
           </p>
           <p className="text-muted-foreground text-sm">
-            Crafted with excellence for those who expect nothing less.
+            Crafted with excellence by <a href="https://syednoor.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-primary">Syed Shaeduzzaman Noor</a>.
           </p>
         </div>
       </div>

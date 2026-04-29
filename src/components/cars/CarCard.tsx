@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Car } from '@/data/mockData';
 import { Fuel, Users, Settings, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
 interface CarCardProps {
-  car: Car;
+  car: any; // Using any for simplicity during migration, but ideally define a type
 }
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
+  const carId = car._id || car.id;
   return (
     <div className="group glass-card overflow-hidden hover-lift">
       {/* Image */}
@@ -69,7 +69,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
             <p className="text-2xl font-bold text-primary">${car.pricePerDay}</p>
             <p className="text-xs text-muted-foreground">per day</p>
           </div>
-          <Link to={`/cars/${car.id}`}>
+          <Link to={`/cars/${carId}`}>
             <Button variant="gold" size="sm" className="gap-2">
               View Details
               <ArrowRight className="h-4 w-4" />

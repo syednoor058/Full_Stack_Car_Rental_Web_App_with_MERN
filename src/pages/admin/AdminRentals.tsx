@@ -13,13 +13,17 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { useAdminRentals, useUpdateRentalStatus } from '@/hooks/useAdminRentals';
+
 const AdminRentals: React.FC = () => {
-  const [rentals, setRentals] = useState<Rental[]>(getAllRentalsWithDetails());
+  const { data: rentals = [], isLoading } = useAdminRentals();
+  const updateStatusMutation = useUpdateRentalStatus();
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const { toast } = useToast();
 
-  const filteredRentals = rentals.filter(rental => {
+  const filteredRentals = rentals.filter((rental: any) => {
     const matchesSearch = 
       rental.car?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       rental.user?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -30,14 +34,20 @@ const AdminRentals: React.FC = () => {
     return matchesSearch && matchesStatus;
   });
 
-  const handleStatusChange = (rentalId: string, newStatus: Rental['status']) => {
-    setRentals(rentals.map(r => 
-      r.id === rentalId ? { ...r, status: newStatus } : r
-    ));
-    toast({
-      title: "Status Updated",
-      description: `Rental status changed to ${newStatus}.`,
-    });
+  const handleStatusChange = async (rentalId: string, newStatus: string) => {
+    try {
+      await updateStatusMutation.mutateAsync({ id: rentalId, status: newStatus });
+      toast({
+        title: "Status Updated",
+        description: `Rental status changed to ${newStatus}.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update status.",
+        variant: "destructive",
+      });
+    }
   };
 
   const getStatusBadge = (status: string) => {
@@ -119,14 +129,22 @@ const AdminRentals: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredRentals.map((rental) => (
-                <tr key={rental.id} className="border-b border-border/50 hover:bg-secondary/30 transition-colors">
+              {isLoading ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-4 text-center text-muted-foreground">Loading rentals...</td>
+                </tr>
+              ) : filteredRentals.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-4 text-center text-muted-foreground">No rentals found.</td>
+                </tr>
+              ) : filteredRentals.map((rental: any) => (
+                <tr key={rental._id} className="border-b border-border/50 hover:bg-secondary/30 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       {rental.car && (
                         <div className="w-14 h-10 rounded-lg overflow-hidden flex-shrink-0">
                           <img
-                            src={rental.car.images[0]}
+                            src={rental.car.images[0] || 'https://via.placeholder.com/150'}
                             alt={rental.car.name}
                             className="w-full h-full object-cover"
                           />
@@ -146,8 +164,8 @@ const AdminRentals: React.FC = () => {
                   </td>
                   <td className="px-6 py-4">
                     <div>
-                      <p className="text-foreground text-sm">{rental.pickupDate}</p>
-                      <p className="text-muted-foreground text-sm">to {rental.returnDate}</p>
+                      <p className="text-foreground text-sm">{new Date(rental.pickupDate).toLocaleDateString()}</p>
+                      <p className="text-muted-foreground text-sm">to {new Date(rental.returnDate).toLocaleDateString()}</p>
                     </div>
                   </td>
                   <td className="px-6 py-4">
@@ -159,7 +177,7 @@ const AdminRentals: React.FC = () => {
                   <td className="px-6 py-4">
                     <Select 
                       value={rental.status} 
-                      onValueChange={(value: Rental['status']) => handleStatusChange(rental.id, value)}
+                      onValueChange={(value: any) => handleStatusChange(rental._id, value)}
                     >
                       <SelectTrigger className="w-[130px]">
                         <SelectValue />
@@ -177,12 +195,6 @@ const AdminRentals: React.FC = () => {
             </tbody>
           </table>
         </div>
-        
-        {filteredRentals.length === 0 && (
-          <div className="p-12 text-center">
-            <p className="text-muted-foreground">No rentals found matching your criteria.</p>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -3,44 +3,47 @@ import { DollarSign, TrendingUp, Car, Users } from 'lucide-react';
 import { rentalStats, monthlyRevenue, mockCars, mockUsers } from '@/data/mockData';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, AreaChart, Area } from 'recharts';
 
+import { useAdminStats } from '@/hooks/useAdminStats';
+import { useAdminCars } from '@/hooks/useAdminCars';
+import { useAdminRentals } from '@/hooks/useAdminRentals';
+
 const AdminRevenue: React.FC = () => {
+  const { data: statsData, isLoading: statsLoading } = useAdminStats();
+  const { data: cars = [], isLoading: carsLoading } = useAdminCars();
+  const { data: rentals = [] } = useAdminRentals();
+
   const stats = [
     {
       label: 'Total Revenue',
-      value: `$${rentalStats.totalRevenue.toLocaleString()}`,
+      value: `$${statsData?.totalRevenue.toLocaleString() || '0'}`,
       icon: DollarSign,
       change: '+12.5%',
     },
     {
       label: 'Total Rentals',
-      value: rentalStats.totalRentals.toLocaleString(),
+      value: statsData?.totalRentals.toLocaleString() || '0',
       icon: Car,
       change: '+8.2%',
     },
     {
-      label: 'Active Customers',
-      value: mockUsers.filter(u => u.role === 'user').length.toString(),
+      label: 'Total Customers',
+      value: statsData?.totalUsers.toString() || '0',
       icon: Users,
       change: '+15.3%',
     },
     {
       label: 'Avg. Rental Value',
-      value: `$${Math.round(rentalStats.totalRevenue / rentalStats.totalRentals).toLocaleString()}`,
+      value: `$${statsData?.totalRentals ? Math.round(statsData.totalRevenue / statsData.totalRentals).toLocaleString() : '0'}`,
       icon: TrendingUp,
       change: '+4.1%',
     },
   ];
 
-  const brandRevenue = mockCars.reduce((acc, car) => {
-    const existing = acc.find(b => b.brand === car.brand);
-    const revenue = car.pricePerDay * 30; // Mock monthly revenue per car
-    if (existing) {
-      existing.revenue += revenue;
-    } else {
-      acc.push({ brand: car.brand, revenue });
-    }
-    return acc;
-  }, [] as { brand: string; revenue: number }[]);
+  const brandRevenue = statsData?.revenueByBrand || [];
+
+  if (statsLoading || carsLoading) {
+    return <div className="p-8 text-center text-muted-foreground animate-pulse">Loading analytics...</div>;
+  }
 
   return (
     <div className="space-y-8">
@@ -78,7 +81,7 @@ const AdminRevenue: React.FC = () => {
           <h2 className="font-display text-xl font-semibold text-foreground mb-6">Monthly Revenue</h2>
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={monthlyRevenue}>
+              <AreaChart data={statsData?.monthlyRevenue || []}>
                 <defs>
                   <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="hsl(40 90% 55%)" stopOpacity={0.3}/>
@@ -160,24 +163,33 @@ const AdminRevenue: React.FC = () => {
 
       {/* Top Performing Cars */}
       <div className="glass-card p-6">
-        <h2 className="font-display text-xl font-semibold text-foreground mb-6">Top Performing Vehicles</h2>
+        <h2 className="font-display text-xl font-semibold text-foreground mb-6">Top Performing Vehicles (This Month)</h2>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-border">
                 <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Vehicle</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Price/Day</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Est. Monthly Revenue</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Revenue Generated (This Month)</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Status</th>
               </tr>
             </thead>
             <tbody>
-              {mockCars.sort((a, b) => b.pricePerDay - a.pricePerDay).slice(0, 5).map((car) => (
-                <tr key={car.id} className="border-b border-border/50">
+              {cars.map((car: any) => {
+                const carRev = statsData?.revenueByCarThisMonth?.find((r: any) => r._id === car._id);
+                return {
+                  ...car,
+                  revenueThisMonth: carRev ? carRev.revenue : 0
+                };
+              })
+              .sort((a: any, b: any) => b.revenueThisMonth - a.revenueThisMonth)
+              .slice(0, 5)
+              .map((car: any) => (
+                <tr key={car._id} className="border-b border-border/50">
                   <td className="px-4 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-8 rounded overflow-hidden">
-                        <img src={car.images[0]} alt={car.name} className="w-full h-full object-cover" />
+                        <img src={car.images[0] || 'https://via.placeholder.com/150'} alt={car.name} className="w-full h-full object-cover" />
                       </div>
                       <div>
                         <p className="font-medium text-foreground">{car.name}</p>
@@ -187,11 +199,34 @@ const AdminRevenue: React.FC = () => {
                   </td>
                   <td className="px-4 py-4 text-foreground">${car.pricePerDay}</td>
                   <td className="px-4 py-4 text-primary font-semibold">
-                    ${(car.pricePerDay * 20).toLocaleString()}
+                    ${car.revenueThisMonth.toLocaleString()}
                   </td>
                   <td className="px-4 py-4">
-                    <span className={`inline-block w-2 h-2 rounded-full mr-2 ${car.available ? 'bg-green-400' : 'bg-red-400'}`} />
-                    <span className="text-foreground">{car.available ? 'Available' : 'Rented'}</span>
+                    {(() => {
+                      const isRented = rentals.some((r: any) => r.car?._id === car._id && r.status === 'active');
+                      if (car.available) {
+                        return (
+                          <>
+                            <span className="inline-block w-2 h-2 rounded-full mr-2 bg-green-400" />
+                            <span className="text-foreground">Available</span>
+                          </>
+                        );
+                      } else if (isRented) {
+                        return (
+                          <>
+                            <span className="inline-block w-2 h-2 rounded-full mr-2 bg-red-400" />
+                            <span className="text-foreground">Rented</span>
+                          </>
+                        );
+                      } else {
+                        return (
+                          <>
+                            <span className="inline-block w-2 h-2 rounded-full mr-2 bg-gray-400" />
+                            <span className="text-foreground">Unavailable</span>
+                          </>
+                        );
+                      }
+                    })()}
                   </td>
                 </tr>
               ))}

@@ -23,6 +23,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
+import { useCars } from "@/hooks/useCars";
+
 const Cars: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedBrand, setSelectedBrand] = useState<string>("all");
@@ -33,26 +35,19 @@ const Cars: React.FC = () => {
   const [priceRange, setPriceRange] = useState<string>("all");
   const [availableOnly, setAvailableOnly] = useState(false);
 
-  const brands = [...new Set(mockCars.map((car) => car.brand))];
-  const fuelTypes = [...new Set(mockCars.map((car) => car.fuelType))];
+  const { data: cars = [], isLoading } = useCars({
+    search: searchQuery,
+    brand: selectedBrand === "all" ? "" : selectedBrand,
+    fuelType: selectedFuel === "all" ? "" : selectedFuel,
+    transmission: selectedTransmission === "all" ? "" : selectedTransmission,
+    available: availableOnly ? "true" : "",
+  });
 
+  // Client-side additional filtering for things not handled by basic backend filters yet
   const filteredCars = useMemo(() => {
-    return mockCars.filter((car) => {
-      const matchesSearch =
-        car.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        car.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        car.model.toLowerCase().includes(searchQuery.toLowerCase());
-
-      const matchesBrand =
-        selectedBrand === "all" || car.brand === selectedBrand;
-      const matchesFuel =
-        selectedFuel === "all" || car.fuelType === selectedFuel;
-      const matchesTransmission =
-        selectedTransmission === "all" ||
-        car.transmission === selectedTransmission;
+    return cars.filter((car: any) => {
       const matchesSeats =
         selectedSeats === "all" || car.seats.toString() === selectedSeats;
-      const matchesAvailability = !availableOnly || car.available;
 
       let matchesPrice = true;
       if (priceRange !== "all") {
@@ -61,25 +56,13 @@ const Cars: React.FC = () => {
           car.pricePerDay >= min && (max ? car.pricePerDay <= max : true);
       }
 
-      return (
-        matchesSearch &&
-        matchesBrand &&
-        matchesFuel &&
-        matchesTransmission &&
-        matchesSeats &&
-        matchesAvailability &&
-        matchesPrice
-      );
+      return matchesSeats && matchesPrice;
     });
-  }, [
-    searchQuery,
-    selectedBrand,
-    selectedFuel,
-    selectedTransmission,
-    selectedSeats,
-    priceRange,
-    availableOnly,
-  ]);
+  }, [cars, selectedSeats, priceRange]);
+
+  // Extract brands and fuel types from the actual cars data or hardcode them
+  const brands = ["Mercedes-Benz", "BMW", "Porsche", "Land Rover", "Tesla", "Audi"];
+  const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid"];
 
   const clearFilters = () => {
     setSearchQuery("");
@@ -297,10 +280,16 @@ const Cars: React.FC = () => {
               </p>
 
               {/* Cars Grid */}
-              {filteredCars.length > 0 ? (
+              {isLoading ? (
                 <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {filteredCars.map((car) => (
-                    <CarCard key={car.id} car={car} />
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i} className="glass-card h-[400px] animate-pulse" />
+                  ))}
+                </div>
+              ) : filteredCars.length > 0 ? (
+                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {filteredCars.map((car: any) => (
+                    <CarCard key={car._id} car={car} />
                   ))}
                 </div>
               ) : (

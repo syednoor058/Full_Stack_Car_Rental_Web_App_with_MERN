@@ -10,6 +10,8 @@ import { useToast } from "@/hooks/use-toast";
 const Register: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +19,8 @@ const Register: React.FC = () => {
   const [errors, setErrors] = useState<{
     name?: string;
     email?: string;
+    phone?: string;
+    address?: string;
     password?: string;
     confirmPassword?: string;
   }>({});
@@ -29,14 +33,14 @@ const Register: React.FC = () => {
     const newErrors: {
       name?: string;
       email?: string;
+      phone?: string;
+      address?: string;
       password?: string;
       confirmPassword?: string;
     } = {};
 
     if (!name) {
       newErrors.name = "Name is required";
-    } else if (name.length < 2) {
-      newErrors.name = "Name must be at least 2 characters";
     }
 
     if (!email) {
@@ -45,13 +49,18 @@ const Register: React.FC = () => {
       newErrors.email = "Please enter a valid email";
     }
 
+    if (!phone) {
+      newErrors.phone = "Phone number is required";
+    }
+
+    if (!address) {
+      newErrors.address = "Address is required";
+    }
+
     if (!password) {
       newErrors.password = "Password is required";
     } else if (password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
-      newErrors.password =
-        "Password must contain uppercase, lowercase, and number";
     }
 
     if (password !== confirmPassword) {
@@ -69,7 +78,7 @@ const Register: React.FC = () => {
 
     setLoading(true);
     try {
-      const success = await register(name, email, password);
+      const success = await register(name, email, password, phone, address);
       if (success) {
         toast({
           title: "Account created!",
@@ -154,21 +163,47 @@ const Register: React.FC = () => {
               )}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="phone">Phone Number</Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="+1 234 567 890"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+                {errors.phone && (
+                  <p className="text-sm text-destructive">{errors.phone}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="john@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="pl-12"
                 />
+                {errors.email && (
+                  <p className="text-sm text-destructive">{errors.email}</p>
+                )}
               </div>
-              {errors.email && (
-                <p className="text-sm text-destructive">{errors.email}</p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="address">Address</Label>
+              <Input
+                id="address"
+                type="text"
+                placeholder="Enter your full address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+              />
+              {errors.address && (
+                <p className="text-sm text-destructive">{errors.address}</p>
               )}
             </div>
 
